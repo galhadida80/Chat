@@ -168,8 +168,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 		if(o == send_to) {
 			String s= user_send.getText();
 			client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, s+"@"+tf.getText()));
-			user_send.setText("Insert ");
+			user_send.setText("Insert private username");
 			send_to.setEnabled(true);
+			user_send.addActionListener(this);
+			tf.setText("");
+
 
 			return;
 		}

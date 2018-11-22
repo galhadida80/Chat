@@ -262,10 +262,11 @@ public class Server {
 					String time = sdf.format(new Date());
 					String messageLf = time + " " + message + "\n";
 					if(message.contains("@")) {
+						ClientThread Client_send = null ;
+
 						for(int i = 0; i < al.size(); ++i) {
 							
 							ClientThread ct = al.get(i);
-							ClientThread Client_send = null ;
 
 							if(ct.username==this.username) {
 								 Client_send = al.get(i);
