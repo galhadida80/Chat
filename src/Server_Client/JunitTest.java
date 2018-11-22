@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import Server_Client.Server.ClientThread;
 
 class JunitTest {
+	
 	Server server1 = new Server(1500);
 	Client client1 = new Client("localhost", 1500, "roi");
 	Client client2 = new Client("localhost", 1500, "gal");
