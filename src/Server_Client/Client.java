@@ -48,9 +48,13 @@ public class Client  {
 	}
 	
 	///////////////////////////////////////////
-
+	
 	public String getSendhim() {
 		return sendhim;
+	}
+
+	public String getUsername() {
+		return username;
 	}
 
 	public void setSendhim(String sendhim) {
