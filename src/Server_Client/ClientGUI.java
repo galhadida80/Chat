@@ -75,7 +75,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		// the Label and the TextField
 		label = new JLabel("Enter your username below", SwingConstants.CENTER); //where to put the labael on the chat
 		northPanel.add(label);
-		tf = new JTextField("Anonymous"); //the text in the label
+		tf = new JTextField("Insert username"); //the text in the label
 		tf.setBackground(Color.WHITE);
 		northPanel.add(tf); //put in the up panel ;
 		add(northPanel, BorderLayout.NORTH); //determine where to put the filed of port user name and server
@@ -88,12 +88,13 @@ public class ClientGUI extends JFrame implements ActionListener {
 		centerPanel.add(new JScrollPane(ta));
 		ta.setEditable(false);
 		add(centerPanel, BorderLayout.CENTER);
-		user_send=new JTextField("send to");
+		user_send=new JTextField("");
 
-		send_to=new JButton("send");
+		send_to=new JButton("send private messege");
 		send_to.addActionListener(this);
-		northPanel.add(new JLabel("send to:"));
-		user_send.setBackground(Color.magenta);
+	
+		user_send.setBackground(Color.cyan);
+		northPanel.add(new JLabel("for send private messege click on Send"));
 		northPanel.add(user_send);
 		northPanel.add(send_to);
 		username1.setEditable(false);
@@ -128,11 +129,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 		ta.append(str);
 		ta.setCaretPosition(ta.getText().length() - 1);
 	}
-	//	void appendprivate(String str) {
-	//		ta.append(str);
-	//		user_send.getText();
-	//		user_send.setText("g");
-	//	}
+
 
 	// called by the GUI is the connection failed
 	// we reset our buttons, label, textfield
@@ -168,18 +165,30 @@ public class ClientGUI extends JFrame implements ActionListener {
 			client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));				
 			return;
 		}
+		if(o == send_to) {
+			String s= user_send.getText();
+			client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, s+"@"+tf.getText()));
+			user_send.setText("Insert ");
+			send_to.setEnabled(true);
+
+			return;
+		}
+
 
 		// ok it is coming from the JTextField
 		if(connected) {
-			String s= user_send.getText();
-			if(!s.equals("")) {
-				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, s+"@"+tf.getText()));
-				user_send.setText("");
-			}
-			else {
+//			String s= user_send.getText();
+//			if(!s.equals("")) {
+//				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, s+"@"+tf.getText()));
+//				user_send.setText("Insert private username");
+//				send_to.setEnabled(true);
+//
+//				
+//			}
+//			else  {
 				// just have to send the message
 				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));	
-			}
+			//}
 			tf.setText("");
 
 			return;
@@ -230,19 +239,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 			// Action listener for when the user enter a message
 			tf.addActionListener(this);
 		}
-		//		if(o == send_to) {
-		//		
-		//			if(user_send.getText()!=null) {
-		//				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));				
-		//
-		//				user_send.setText("");
-		//				send_to.setEnabled(false);
-		//				return;
-		//
-		//			}
-		//		
-		//		}
-
+	
 	}
 
 	public JTextField getuser_send() {

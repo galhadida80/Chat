@@ -128,16 +128,16 @@ public class Server {
 		String messageLf = time + " " + message + "\n";
 		// display message on console or GUI
 		if(sg == null)
-			System.out.print(messageLf);
+			System.out.print(messageLf+"\n");
 		else
-			sg.appendRoom(messageLf+"5");     // append in the room window
+			sg.appendRoom(messageLf+"\n");     // append in the room window
 
 		// we loop in reverse order in case we would have to remove a Client
 		// because it has disconnected
 		for(int i = al.size(); --i >= 0;) {
 			ClientThread ct = al.get(i);
 			// try to write to the Client if it fails remove it from the list
-			if(!ct.writeMsg(messageLf)) {
+			if(!ct.writeMsg(messageLf+"\n")) {
 				al.remove(i);
 				display("Disconnected Client " + ct.username + " removed from list.");
 			}
@@ -222,6 +222,7 @@ public class Server {
 				// read the username
 				username = (String) sInput.readObject();
 				display(username + " just connected.");
+				broadcast(username + " just connected.");
 			}
 			catch (IOException e) {
 				display("Exception creating new Input/output Streams: " + e);
@@ -258,24 +259,34 @@ public class Server {
 
 				case ChatMessage.MESSAGE:
 					String []Usern=message.split("@");
+					String time = sdf.format(new Date());
+					String messageLf = time + " " + message + "\n";
 					if(message.contains("@")) {
 						for(int i = 0; i < al.size(); ++i) {
+							
 							ClientThread ct = al.get(i);
+							ClientThread Client_send = null ;
+
+							if(ct.username==this.username) {
+								 Client_send = al.get(i);
+
+							}
 							String name=ct.username;
 							if(name.equals(Usern[0])==true) {
-
-								ct.writeMsg(username+":"+Usern[1]);
+								ct.writeMsg(time+" "+username+":"+Usern[1]+ "\n");
+								Client_send.writeMsg(time+" "+username+":"+Usern[1]+ "\n");
 								sendprivate=true;
 							}
 						}
-						if(sendprivate==false) {
-							broadcast(username + ": " + Usern[1]);
-							sendprivate=true;
-
-						}
+//						if(sendprivate==false) 
+//						{
+//							broadcast(username+ " : "+"try to send msg private to "+Usern[0]+" " + Usern[1]);
+//							sendprivate=true;
+//						}
 
 					}
-					if(sendprivate==false) {
+					if(sendprivate==false)
+					{
 						broadcast(username + ": " + message);
 
 					}

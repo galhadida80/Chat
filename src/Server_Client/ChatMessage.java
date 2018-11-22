@@ -17,7 +17,7 @@ public class ChatMessage implements Serializable {
 	// LOGOUT to disconnect from the Server
 	static final int WHOISIN = 0, MESSAGE = 1, LOGOUT = 2;
 	private int type;
-	private String message,user_send;
+	private String message;
 	
 	// constructor
 	ChatMessage(int type, String message) {

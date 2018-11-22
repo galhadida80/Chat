@@ -237,7 +237,7 @@ public class Client  {
 			}
 			
 			else {		
-				if(client.getSendhim()!=null) {
+				if(client.getSendhim()!=null ) {
 					client.sendMessage(new ChatMessage(ChatMessage.MESSAGE,client.getSendhim()+"@"+ msg));
 				}
 				else {
