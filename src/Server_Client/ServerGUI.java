@@ -26,6 +26,10 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 
 
 	// server constructor that receive the port to listen to for connection as parameter
+	/**
+	 * Constructor
+	 * @param port - the logic port in the server
+	 */
 	ServerGUI(int port) {
 		super("Chat Server");
 		server = null;
@@ -43,21 +47,7 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 		add(east,BorderLayout.EAST);
 	
 		
-		//east.add(new JLabel("online"));
-
-
-
-
-
-		//JPanel LIST_EAST = new JPanel(new GridLayout(2,1));
-		//		online_client = new JTextArea(10, 10);
-		//		online_client.setEditable(false);
-		//		east.add(online_client);
-		//		east.add(new JScrollPane(online_client));
-
-
-
-
+		
 
 		// the event and chat room
 		JPanel center = new JPanel(new GridLayout(2,1));
@@ -79,6 +69,10 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 
 	// append message to the two JTextArea
 	// position at the end
+	/**
+	 * display the message on the GUI screen
+	 * @param str - the message
+	 */
 	void appendRoom(String str) {
 		chat.append(str);
 		chat.setCaretPosition(chat.getText().length() - 1);
@@ -91,7 +85,9 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 	
 
 
-	// start or stop where clicked
+	/** 
+	 * start or stop where clicked
+	 */
 	public void actionPerformed(ActionEvent e) {
 		// if running we have to stop
 		if(server != null) {
@@ -126,10 +122,10 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 		new ServerGUI(1500);
 	}
 
-	/*
+	/**
 	 * If the user click the X button to close the application
 	 * I need to close the connection with the server to free the port
-	 */
+	 **/
 	public void windowClosing(WindowEvent e) {
 		// if my Server exist
 		if(server != null) {
@@ -156,6 +152,9 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 	 * A thread to run the Server
 	 */
 	class ServerRunning extends Thread {
+		/**
+		 * creating a thread that run the server
+		 */
 		public void run() {
 			server.start();         // should execute until if fails
 			// the server failed

@@ -48,7 +48,7 @@ public class Client  {
 	}
 	
 	///////////////////////////////////////////
-	
+					//Getters Setters//
 	public String getSendhim() {
 		return sendhim;
 	}
@@ -76,9 +76,9 @@ public class Client  {
 	public boolean start() {
 		// try to connect to the server
 		try {
-			socket = new Socket(server, port);
+			socket = new Socket(server, port);//create a socket to listining
 		} 
-		// if it failed not much I can so
+		
 		catch(Exception ec) {
 			display("Error connectiong to server:" + ec);
 			return false;
@@ -100,8 +100,7 @@ public class Client  {
 
 		// creates the Thread to listen from the server 
 		new ListenFromServer().start();
-		// Send our username to the server this is the only message that we
-		// will send as a String. All other messages will be ChatMessage objects
+		// Send our username to the server 
 		try
 		{
 			sOutput.writeObject(username);
@@ -122,7 +121,7 @@ public class Client  {
 		if(cg == null)
 			System.out.println(msg);      // println in console mode
 		else
-			cg.append(msg + "\n");		// app33end to the ClientGUI JTextArea (or whatever)
+			cg.append(msg + "\n");		// append to the ClientGUI JTextArea (or whatever)
 	}
 	
 	/*
@@ -186,8 +185,8 @@ public class Client  {
 		// default values
 		int portNumber = 1500;
 		String serverAddress = "localhost";
-		String userName = "shir";
-
+		String userName = "username";
+		
 		// depending of the number of arguments provided we fall through
 		switch(args.length) {
 			// > javac Client username portNumber serverAddr

@@ -29,14 +29,19 @@ public class Server {
 
 
 
-	/*
+	/**
 	 *  server constructor that receive the port to listen to for connection as parameter
 	 *  in console
-	 */
+	 *  @param port - the port for the server
+	 **/
 	public Server(int port) {
 		this(port, null);
 	}
-
+	/**
+	 * Constructor
+	 * @param port - the port in the server
+	 * @param sg - GUI mode
+	 */
 	public Server(int port, ServerGUI sg) {
 		// GUI or not
 		this.sg = sg;
@@ -49,11 +54,17 @@ public class Server {
 	} 
 	
 	//////////////////////////////////
+	/**
+	 * the function count the number of clients that in the chat
+	 * @return the number of the clients in the arrayList
+	 */
 	public int SizeOfClientList (){
 		return (al.size());
 	}
-	//////////////////////////////////????
-
+	//////////////////////////////////
+	/**
+	 * to start a chat the function creating socket to make a connection between the client and the server.
+	 */
 	public void start() {
 		keepGoing = true;
 		/* create socket server and wait for connection requests */
@@ -101,9 +112,9 @@ public class Server {
 			display(msg);
 		}
 	}		
-	/*
+	/**
 	 * For the GUI to stop the server
-	 */
+	 **/
 	protected void stop() {
 		keepGoing = false;
 		// connect to myself as Client to exit statement 
@@ -115,9 +126,10 @@ public class Server {
 			// nothing I can really do
 		}
 	}
-	/*
+	/**
 	 * Display an event (not a message) to the console or the GUI
-	 */
+	 * @param msg - the message we want to send
+	 **/
 	private void display(String msg) {
 		String time = datatime.format(new Date()) + " " + msg;
 		if(sg == null)
@@ -125,11 +137,12 @@ public class Server {
 		else
 			sg.appendEvent(time + "\n");
 	}
-	/*
+	
+
+	/**
 	 *  to broadcast a message to all Clients
-	 */
-
-
+	 *	@param message - the message that send by the client
+	 **/
 	private synchronized void broadcast(String message) {
 		// add HH:mm:ss and \n to the message
 		String time = datatime.format(new Date());
@@ -152,7 +165,10 @@ public class Server {
 		}
 	}
 
-	// for a client who logoff using the LOGOUT message
+	/** 
+	 * for a client who logoff using the LOGOUT message
+	 * @param id - the client we want to remove
+	 */
 	synchronized void remove(int id) {
 		// scan the array list until we found the Id
 		for(int i = 0; i < al.size(); ++i) {
@@ -196,7 +212,9 @@ public class Server {
 		server.start();
 	}
 
-	/** One instance of this thread will run for each client */
+	/** 
+	 * One instance of this thread will run for each client
+	 **/
 	class ClientThread extends Thread {
 		// the socket where to listen/talk
 		Socket socket;
@@ -215,7 +233,10 @@ public class Server {
 
 
 
-		// Constructore
+		/**
+		 *  Constructore
+		 * @param socket - the socket for the client who listing all the time
+		 */
 		ClientThread(Socket socket) {
 			// a unique id
 			id = ++uniqueId;
@@ -243,7 +264,9 @@ public class Server {
 			date = new Date().toString() + "\n";
 		}
 
-		// what will run forever
+		/**
+		 *  what will run forever
+		 */
 		public void run() {
 			// to loop until LOGOUT
 			boolean keepGoing = true;
@@ -310,16 +333,13 @@ public class Server {
 			close();
 		}
 
-		// try to close everything
 		
-		/**
-		 * write a message to the client
-		 * @param msg - the message we want to send
-		 * @return return false if the socket disconnect, else return true
+		
+	
+
+		/** 
+		 * try to close everything
 		 */
-
-
-		// try to close everything
 		private void close() {
 			// try to close the connection
 			try {
@@ -336,9 +356,11 @@ public class Server {
 			catch (Exception e) {}
 		}
 
-		/*
+		/**
 		 * Write a String to the Client output stream
-		 */
+		 * @param msg - the massage we want to send
+		 * @return if the socket is disconnect return false if not return true
+		 **/
 		private boolean writeMsg(String msg) {
 			// if Client is still connected send the message to it
 			if(!socket.isConnected()) {
@@ -357,9 +379,6 @@ public class Server {
 			return true;
 		}
 	}
-
-
-
 
 
 }
