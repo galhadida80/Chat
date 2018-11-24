@@ -234,7 +234,7 @@ public class Server {
 
 
 		/**
-		 *  Constructore
+		 * Constructore
 		 * @param socket - the socket for the client who listing all the time
 		 */
 		ClientThread(Socket socket) {

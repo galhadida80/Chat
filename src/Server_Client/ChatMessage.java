@@ -22,10 +22,21 @@ public class ChatMessage implements Serializable {
 
 	
 	// constructor
+	/**
+	 * 
+	 * @param type - an integer number that the client puts in the present what we want to do
+	 * @param message - the message that we want to send
+	 */
+
 	ChatMessage(int type, String message) {
 		this.type = type;
 		this.message = message;
 	}
+	/**
+	 * @param type - an integer number that the client puts in the present what we want to do
+	 * @param message - the message that we want to send
+	 * @param name - the name of the client we want to send the message to (only in private message)
+	 */
 
 	ChatMessage(int type, String message,String name) {
 		this.type = type;
@@ -34,9 +45,17 @@ public class ChatMessage implements Serializable {
 	}
 	
 	// getters
+	/**
+	 * 
+	 * @return type
+	 */
 	int getType() {
 		return type;
 	}
+	/**
+	 * getter
+	 * @return the message
+	 */
 	String getMessage() {
 		return message;
 	}

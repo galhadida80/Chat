@@ -38,14 +38,14 @@ public class ClientGUI extends JFrame implements ActionListener {
 	private int defaultPort;
 	private String defaultHost;
 
-	// Constructor connection receiving a socket number
-	ClientGUI(String host, int port) {
+	/**
+	 * @param host - the server to connect
+	 * @param port - the logic port in the server we connect to 
+	 */	ClientGUI(String host, int port) {
 
 		super("Chat Client");
 		defaultPort = port;
 		defaultHost = host;
-//		JDialog gal = new JDialog();
-//		gal.add(gal);
 		// The NorthPanel with:
 		JPanel northPanel = new JPanel(new GridLayout(6,2)); //deteminte the long of space beetween the panel user name 
 		// the server name anmd the port number
@@ -126,7 +126,11 @@ public class ClientGUI extends JFrame implements ActionListener {
 	}
 
 	// called by the Client to append text in the TextArea 
-	void append(String str) {
+	 /**
+		 * to display message on the screen
+		 * @param str - the message the client send
+		 */
+	 void append(String str) {
 		ta.append(str);
 		ta.setCaretPosition(ta.getText().length() - 1);
 	}
@@ -134,6 +138,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 	// called by the GUI is the connection failed
 	// we reset our buttons, label, textfield
+	 /**
+	 * if the connection failed reset our buttons, labels and textfield
+	*/
 	void connectionFailed() {
 		login.setEnabled(true);
 		logout.setEnabled(false);
@@ -151,9 +158,9 @@ public class ClientGUI extends JFrame implements ActionListener {
 		connected = false;
 	}
 
-	/*
+	/**
 	 * Button or JTextField clicked
-	 */
+	 **/
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
 		// if it is the Logout button
@@ -166,17 +173,7 @@ public class ClientGUI extends JFrame implements ActionListener {
 			client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));				
 			return;
 		}
-//		if(o == send_to) {
-//			String s= user_send.getText();
-//			client.sendMessage(new ChatMessage(ChatMessage.SENDPRIVATE,tf.getText(),s));
-//			user_send.setText("Insert private username");
-//			send_to.setEnabled(true);
-//			user_send.addActionListener(this);
-//			tf.setText("");
-//
-//
-//			return;
-//		}
+
 
 
 		// ok it is coming from the JTextField

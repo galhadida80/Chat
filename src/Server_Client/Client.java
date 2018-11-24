@@ -24,21 +24,24 @@ public class Client  {
 	private boolean sendprivate=false;
 
 
-	/*
+	/**
 	 *  Constructor called by console mode
-	 *  server: the server address
-	 *  port: the port number
-	 *  username: the username
-	 */
+	 * @param server - the server address
+	 * @param port - the port number
+	 * @param username - the username
+	 **/
 	Client(String server, int port, String username) {
 		// which calls the common constructor with the GUI set to null
 		this(server, port, username, null);
 	}
 
-	/*
-	 * Constructor call when used from a GUI
-	 * in console mode the ClienGUI parameter is null
-	 */
+	/**
+	 * Constructor called by GUI
+	 * @param server - the server address
+	 * @param port - the port number
+	 * @param username - the username
+	 * @param gui - out GUI
+	 **/
 	Client(String server, int port, String username, ClientGUI cg) {
 		this.server = server;
 		this.port = port;
@@ -49,7 +52,12 @@ public class Client  {
 	
 	///////////////////////////////////////////
 					//Getters Setters//
-	public String getSendhim() {
+	/**
+	 * 
+	 * @return sendhim
+	 */
+	  	public String getSendhim() {
+	 
 		return sendhim;
 	}
 
@@ -70,9 +78,9 @@ public class Client  {
 	}
 
 	///////////////////////////////////////////
-	/*
+	/**
 	 * To start the dialog
-	 */
+	 **/
 	public boolean start() {
 		// try to connect to the server
 		try {
@@ -114,9 +122,10 @@ public class Client  {
 		return true;
 	}
 
-	/*
+	/**
 	 * To send a message to the console or the GUI
-	 */
+	 * @param String msg - the massage that client want to send 
+	 **/
 	private void display(String msg) {
 		if(cg == null)
 			System.out.println(msg);      // println in console mode
@@ -124,9 +133,10 @@ public class Client  {
 			cg.append(msg + "\n");		// append to the ClientGUI JTextArea (or whatever)
 	}
 	
-	/*
-	 * To send a message to the server
-	 */
+	/**
+	 * To send a message(object) to the server
+	 * @param ChatMessage msg - the massge the client want to send
+	 **/
 	void sendMessage(ChatMessage msg) {
 		try {
 		
@@ -140,10 +150,10 @@ public class Client  {
 	
 	
 
-	/*
+	/**
 	 * When something goes wrong
 	 * Close the Input/Output streams and disconnect not much to do in the catch clause
-	 */
+	 **/
 	private void disconnect() {
 		try { 
 			if(sInput != null) sInput.close();
