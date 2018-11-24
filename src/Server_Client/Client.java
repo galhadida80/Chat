@@ -20,7 +20,7 @@ public class Client  {
 	// the server, the port and the username
 	private String server, username;
 	private int port;
-	public String sendhim;
+	private String sendhim;
 	private boolean sendprivate=false;
 
 
@@ -241,12 +241,13 @@ public class Client  {
 			}
 			
 			else {		
-				if(client.getSendhim()!=null ) {
-					client.sendMessage(new ChatMessage(ChatMessage.MESSAGE,client.getSendhim()+"@"+ msg));
-				}
-				else {
+//				if(client.getSendhim()!=null ) {
+//					client.sendMessage(new ChatMessage(ChatMessage.MESSAGE,client.getSendhim()+"@"+ msg));
+//					
+//}
+//				else {
 					client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, msg));
-				}
+//				}
 			}
 		}
 		// done disconnect

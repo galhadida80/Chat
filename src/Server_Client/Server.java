@@ -5,6 +5,8 @@ import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import Server_Client.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 
@@ -19,7 +21,7 @@ public class Server {
 	// if I am in a GUI
 	private ServerGUI sg;
 	// to display time
-	private SimpleDateFormat sdf;
+	private SimpleDateFormat datatime;
 	// the port number to listen for connection
 	private int port;
 	// the boolean that will be turned of to stop the server
@@ -41,10 +43,16 @@ public class Server {
 		// the port
 		this.port = port;
 		// to display hh:mm:ss
-		sdf = new SimpleDateFormat("HH:mm:ss");
+		datatime = new SimpleDateFormat("HH:mm:ss");
 		// ArrayList for the Client list
 		al = new ArrayList<ClientThread>();
+	} 
+	
+	//////////////////////////////////
+	public int SizeOfClientList (){
+		return (al.size());
 	}
+	//////////////////////////////////????
 
 	public void start() {
 		keepGoing = true;
@@ -89,7 +97,7 @@ public class Server {
 		}
 		// something went bad
 		catch (IOException e) {
-			String msg = sdf.format(new Date()) + " Exception on new ServerSocket: " + e + "\n";
+			String msg = datatime.format(new Date()) + " Exception on new ServerSocket: " + e + "\n";
 			display(msg);
 		}
 	}		
@@ -111,7 +119,7 @@ public class Server {
 	 * Display an event (not a message) to the console or the GUI
 	 */
 	private void display(String msg) {
-		String time = sdf.format(new Date()) + " " + msg;
+		String time = datatime.format(new Date()) + " " + msg;
 		if(sg == null)
 			System.out.println(time);
 		else
@@ -124,7 +132,7 @@ public class Server {
 
 	private synchronized void broadcast(String message) {
 		// add HH:mm:ss and \n to the message
-		String time = sdf.format(new Date());
+		String time = datatime.format(new Date());
 		String messageLf = time + " " + message + "\n";
 		// display message on console or GUI
 		if(sg == null)
@@ -239,10 +247,33 @@ public class Server {
 		public void run() {
 			// to loop until LOGOUT
 			boolean keepGoing = true;
-			while(keepGoing) {
+			
+			////////////////////////////
+			for (int i = 0; i < al.size()-1; i++) {
+				if (al.get(i).username.compareTo(username)==0 ){
+					keepGoing = false;
+					try {
+						sOutput.writeObject("this user name is allready exist! please choose another username\n");
+					} catch (IOException ex) {
+						Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+					}
+				}
+			}
+			//////////////
+			
+			while(keepGoing) { //the loop of logout
 				// read a String (which is an object)
 				try {
 					cm = (ChatMessage) sInput.readObject();
+					if(cm.getName() != null){ //if i wanted to write a private message
+						for(int i=0; i<al.size(); i++){
+							if(cm.getName().equals(al.get(i).username)){
+								al.get(i).sOutput.writeObject("private message from "+username+" to "+cm.getName()+" :"+cm.getMessage()+"\n");
+								sOutput.writeObject("private message from "+username+" to "+cm.getName()+" :"+cm.getMessage()+"\n");
+							}
+						}
+					}
+
 				}
 				catch (IOException e) {
 					display(username + " Exception reading Streams: " + e);
@@ -251,68 +282,42 @@ public class Server {
 				catch(ClassNotFoundException e2) {
 					break;
 				}
-				// the messaage part of the ChatMessage
-				String message = cm.getMessage();
 
-				// Switch on the type of message receive
-				switch(cm.getType()) {
+				String message = cm.getMessage(); // the messaage part of the ChatMessage
+				switch(cm.getType()) { // Switch on the type of message receive
 
 				case ChatMessage.MESSAGE:
-					String []Usern=message.split("@");
-					String time = sdf.format(new Date());
-					String messageLf = time + " " + message + "\n";
-					if(message.contains("@")) {
-						ClientThread Client_send = null ;
-
-						for(int i = 0; i < al.size(); ++i) {
-							
-							ClientThread ct = al.get(i);
-
-							if(ct.username==this.username) {
-								 Client_send = al.get(i);
-
-							}
-							String name=ct.username;
-							if(name.equals(Usern[0])==true) {
-								ct.writeMsg(time+" "+username+":"+Usern[1]+ "\n");
-								Client_send.writeMsg(time+" "+username+":"+Usern[1]+ "\n");
-								sendprivate=true;
-							}
-						}
-//						if(sendprivate==false) 
-//						{
-//							broadcast(username+ " : "+"try to send msg private to "+Usern[0]+" " + Usern[1]);
-//							sendprivate=true;
-//						}
-
-					}
-					if(sendprivate==false)
-					{
-						broadcast(username + ": " + message);
-
-					}
-					sendprivate=false;
+					broadcast(username + ": " + message);
 					break;
-
 				case ChatMessage.LOGOUT:
 					display(username + " disconnected with a LOGOUT message.");
 					keepGoing = false;
 					break;
 				case ChatMessage.WHOISIN:
-					writeMsg("List of the users connected at " + sdf.format(new Date()) + "\n");
-					// scan al the users connected
-					for(int i = 0; i < al.size(); ++i) {
+					writeMsg("List of the users connected at " + datatime.format(new Date()) + "\n");
+					// scan ClientList the users connected
+					for(int  i = 0; i < al.size(); ++i) {
 						ClientThread ct = al.get(i);
 						writeMsg((i+1) + ") " + ct.username + " since " + ct.date);
 					}
 					break;
 				}
+
 			}
 			// remove myself from the arrayList containing the list of the
 			// connected Clients
 			remove(id);
 			close();
 		}
+
+		// try to close everything
+		
+		/**
+		 * write a message to the client
+		 * @param msg - the message we want to send
+		 * @return return false if the socket disconnect, else return true
+		 */
+
 
 		// try to close everything
 		private void close() {

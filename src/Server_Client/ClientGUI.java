@@ -92,7 +92,8 @@ public class ClientGUI extends JFrame implements ActionListener {
 
 		send_to=new JButton("send private messege");
 		send_to.addActionListener(this);
-	
+		user_send.addActionListener(this);
+
 		user_send.setBackground(Color.cyan);
 		northPanel.add(new JLabel("for send private messege click on Send"));
 		northPanel.add(user_send);
@@ -165,36 +166,34 @@ public class ClientGUI extends JFrame implements ActionListener {
 			client.sendMessage(new ChatMessage(ChatMessage.WHOISIN, ""));				
 			return;
 		}
-		if(o == send_to) {
-			String s= user_send.getText();
-			client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, s+"@"+tf.getText()));
-			user_send.setText("Insert private username");
-			send_to.setEnabled(true);
-			user_send.addActionListener(this);
-			tf.setText("");
-
-
-			return;
-		}
+//		if(o == send_to) {
+//			String s= user_send.getText();
+//			client.sendMessage(new ChatMessage(ChatMessage.SENDPRIVATE,tf.getText(),s));
+//			user_send.setText("Insert private username");
+//			send_to.setEnabled(true);
+//			user_send.addActionListener(this);
+//			tf.setText("");
+//
+//
+//			return;
+//		}
 
 
 		// ok it is coming from the JTextField
 		if(connected) {
-//			String s= user_send.getText();
-//			if(!s.equals("")) {
-//				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, s+"@"+tf.getText()));
-//				user_send.setText("Insert private username");
-//				send_to.setEnabled(true);
-//
-//				
-//			}
-//			else  {
-				// just have to send the message
-				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));	
-			//}
-			tf.setText("");
+			String s= user_send.getText();
+			if (s.equals("")){
+				client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, tf.getText()));				
+				tf.setText("");
+				return;
+			}
 
-			return;
+			else{
+				client.sendMessage(new ChatMessage(ChatMessage.SENDPRIVATE, tf.getText(), s));
+				tf.setText("");
+				return;
+			}
+			
 		}
 		if(o == login) {
 			// ok it is a connection request
