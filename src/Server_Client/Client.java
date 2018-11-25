@@ -1,7 +1,7 @@
 package Server_Client;
 
 import java.net.*;
-import java.awt.SecondaryLoop;
+
 import java.io.*;
 import java.util.*;
 
@@ -21,7 +21,7 @@ public class Client  {
 	private String server, username;
 	private int port;
 	private String sendhim;
-	private boolean sendprivate=false;
+
 
 
 	/**
@@ -69,15 +69,8 @@ public class Client  {
 		this.sendhim = sendhim;
 	}
 
-	public boolean isSendprivate() {
-		return sendprivate;
-	}
 
-	public void setSendprivate(boolean sendprivate) {
-		this.sendprivate = sendprivate;
-	}
 
-	///////////////////////////////////////////
 	/**
 	 * To start the dialog
 	 **/
@@ -250,13 +243,8 @@ public class Client  {
 			}
 			
 			else {		
-//				if(client.getSendhim()!=null ) {
-//					client.sendMessage(new ChatMessage(ChatMessage.MESSAGE,client.getSendhim()+"@"+ msg));
-//					
-//}
-//				else {
+
 					client.sendMessage(new ChatMessage(ChatMessage.MESSAGE, msg));
-//				}
 			}
 		}
 		// done disconnect

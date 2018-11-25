@@ -15,11 +15,11 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 
 	private static final long serialVersionUID = 1L;
 	// the stop and start buttons
-	private JButton stopStart,send_to;
+	private JButton stopStart;
 	// JTextArea for the chat room and the events
-	private JTextArea chat, event,online_client;
+	private JTextArea chat, event;
 	// The port number
-	private JTextField tPortNumber,send_mesg;
+	private JTextField tPortNumber;
 	// my server
 	private Server server;
 	ChatMessage cm;
@@ -60,7 +60,13 @@ public class ServerGUI extends JFrame implements ActionListener, WindowListener 
 		appendEvent("Events log.\n");
 		center.add(new JScrollPane(event));	
 		add(center);
-		
+			
+		/////////////font
+		 Font myFont = new Font("ariel", Font.BOLD, 16);
+
+		chat.setFont(myFont);
+		event.setFont(myFont);
+		////////////////
 		// need to be informed when the user click the close button on the frame
 		addWindowListener(this);
 		setSize(500, 600);

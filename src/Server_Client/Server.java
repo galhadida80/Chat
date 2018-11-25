@@ -53,15 +53,7 @@ public class Server {
 		al = new ArrayList<ClientThread>();
 	} 
 	
-	//////////////////////////////////
-	/**
-	 * the function count the number of clients that in the chat
-	 * @return the number of the clients in the arrayList
-	 */
-	public int SizeOfClientList (){
-		return (al.size());
-	}
-	//////////////////////////////////
+	
 	/**
 	 * to start a chat the function creating socket to make a connection between the client and the server.
 	 */
@@ -84,6 +76,7 @@ public class Server {
 				if(!keepGoing)
 					break;
 				ClientThread t = new ClientThread(socket);  // make a thread of it
+				
 				al.add(t);									// save it in the ArrayList
 				t.start();
 			}
@@ -117,8 +110,6 @@ public class Server {
 	 **/
 	protected void stop() {
 		keepGoing = false;
-		// connect to myself as Client to exit statement 
-		// Socket socket = serverSocket.accept();
 		try {
 			new Socket("localhost", port);
 		}
@@ -250,6 +241,7 @@ public class Server {
 				sInput  = new ObjectInputStream(socket.getInputStream());
 				// read the username
 				username = (String) sInput.readObject();
+			
 				display(username + " just connected.");
 				broadcast(username + " just connected.");
 			}
@@ -271,19 +263,16 @@ public class Server {
 			// to loop until LOGOUT
 			boolean keepGoing = true;
 			
-			////////////////////////////
 			for (int i = 0; i < al.size()-1; i++) {
 				if (al.get(i).username.compareTo(username)==0 ){
 					keepGoing = false;
 					try {
-						sOutput.writeObject("this user name is allready exist! please choose another username\n");
+						sOutput.writeObject("this user name is allready exist!\n");
 					} catch (IOException ex) {
 						Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
 					}
 				}
 			}
-			//////////////
-			
 			while(keepGoing) { //the loop of logout
 				// read a String (which is an object)
 				try {
